@@ -1,0 +1,33 @@
+Big Two GAME
+
+GAME RULES
+basic :
+4 players, 13 cards each person, 52 cards total
+Played all cards = win
+
+Cards play way:
+Card ranks(High to low) : 2 A K Q J 10 9 8 7 6 5 4 3
+Spades > Hearts > Clubs > Diamonds
+Combinations :
+1 card
+2 same cards
+3 same cards
+4 same cards
+5 cards with special Combinations :
+snake(or straight) : 5 cards with acending order e.g. AKQJ10 rank depends on the largest card
+same flower(or flush) : 5 cards with same suits, numbers does not matter rank depends on the largest card
+gourd(or full house) : 3 same cards + 2 same cards rank depends on the 3 cards
+four tiu(whatever name) : 4 same cards + any 1 card rank depends on the 4 cards
+straight flush : fulfill requirement of straight and flush at the same time rank depends on the largest card
+
+Scoring : 
+if any player has less cards than you, pay (Your card left - That player's card left) number of tokens(or scores).
+Same logic applies to player who has more cards than you. However, if you should multiply the cards left by 2 if it
+is 8-9, multiply the cards left by 3 if it is 10-12, multiply the cards left by 4 if it is 13.
+
+Play way : 
+At the very start, player with diamond 3 go first, and he has to play the card in first round.
+Player is able to pass the round.
+Player can only play cards that matches the combination type of the previous player.
+If everyone else pass, player can play any kind of combination.
+If player's next player has only one card left, the player must play the largest possible card if he only play 1 card.
