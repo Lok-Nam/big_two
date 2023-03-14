@@ -1,4 +1,5 @@
 Big Two GAME
+This is a text note for me to note down what to design
 
 GAME RULES
 basic :
@@ -31,3 +32,18 @@ Player is able to pass the round.
 Player can only play cards that matches the combination type of the previous player.
 If everyone else pass, player can play any kind of combination.
 If player's next player has only one card left, the player must play the largest possible card if he only play 1 card.
+
+methods that I need to define for game logic:
+playCard
+(at the very first round, diamond 3 must be played)
+checkLegal(check if the combination is valid and larger than previous card)
+pass(allows player to pass if they can't play any card)
+switchPlayer(switch turns)
+checkWinner
+calculateScore
+
+game states:
+Initilizing(like setting up player name)
+playing(playing the game)
+endScreen(summarise score and choose whether to continue or not)
+Rendering:
