@@ -15,8 +15,8 @@ class suits(Enum):
     HEART = 3
     DIAMOND = 4
 
-def deck():
-    
+class deck:
+
     def __init__(self):
         self.cards = []
         for suit in suits:
