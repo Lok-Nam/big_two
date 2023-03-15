@@ -9,6 +9,9 @@ class player:
         self.name = name
         self.hand = []
 
+    def getDeck(self, deck):
+        self.hand = deck
+
 class suits(Enum):
     CLUB = 1
     SPADE = 2
