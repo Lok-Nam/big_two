@@ -13,10 +13,10 @@ class player:
         self.hand = deck
 
 class suits(Enum):
-    CLUB = 1
+    CLUB = 4
     SPADE = 2
     HEART = 3
-    DIAMOND = 4
+    DIAMOND = 1
 
 class deck:
 
@@ -25,17 +25,12 @@ class deck:
         for suit in suits:
             for i in range (1,14):
                 self.cards.append(card(suit, i))
-    
-    def shuffle(self):
-        """
-        shuffle the deck
-        """
-        random.shuffle(self.cards)
 
     def distribute(self):
         """
-        return a list of 4 decks
+        return a list of 4 shuffled decks
         """
+        random.shuffle(self.cards)
         array = np.array(self.cards)
         decks = np.array_split(array)
         return decks
