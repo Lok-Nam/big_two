@@ -35,9 +35,49 @@ def checkCombination(cards):
                     return 0 # 0 means invalid combination
             return size
         case 5:
+            # sort cards
+            cards = sortCards(cards)
+            # define cards property
+            ascending = True
+            sameSuit = True
+            # check straightFlush first : 
+            for i in range(4):
+                if(cards[i].value + 1 != cards[i+1].value):
+                    ascending = False
+                if(cards[i].suit != cards[i+1].suit):
+                    sameSuit = False
+            if(sameSuit and ascending):
+                return straightFlush
+            # check fourPlusOne ie KKKKA: 
+            if(cards[1].value == cards[2].value == cards[3].value and (cards[1].value == cards[0].value or cards[1].value == cards[4].value)):
+                return fourPlusOne
+            # check gourd ie KKKAA: 
+            if((cards[0].value == cards[1].value == cards[2].value and cards[3].value == cards[4].value)or  (cards[2].value == cards[3].value == cards[4].value and cards[0].value == cards[1].value)):
+                return gourd
+            # check flush(same suit):
+            if(sameSuit):
+                return flush
+            if(ascending):
+                return snake
+    return -1 # no combination
 
+def sortCards(cards):
+    """
+    A function to sort cards in 5.
+    """
+    for i in range (4):
+        smallest = cards[i].value
+        smallestIndex = i
+        for k in range (i+1, 5):
+            if(cards[k].value < smallest):
+                smallest = cards[k].value
+                smallestIndex = k
+        temp = cards[smallestIndex]
+        cards[i] = cards[smallestIndex]
+        cards[smallestIndex] = temp
+    return cards
 
-    return 
+        
 
 def checkLarger(currCard, cardPlayed):
     """
@@ -71,7 +111,7 @@ def iniHand(players, decks):
         players[i].hand = decks[i]
 
 
-def gameLoop(players):
+def gameLoop(players): # players is an array with player object
     """
     looping the game until a player win
     """
@@ -82,6 +122,8 @@ def gameLoop(players):
     iniHand(players, decks)
     winner = False
     currCard = [[None][None]] # value and type of combination
+    index = goFirst(players) # which player is playing the card now
+
 
     #loop start here
     while winner == False:
