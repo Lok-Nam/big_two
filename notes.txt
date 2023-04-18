@@ -1,5 +1,6 @@
 Big Two GAME
 This is a text note for me to note down what to design
+As I havent made AI yet, this is only played by one player. The screen displays the deck of current player.
 
 GAME RULES
 basic :
@@ -35,8 +36,8 @@ If player's next player has only one card left, the player must play the largest
 
 methods that I need to define for game logic:
 playCard
-(at the very first round, diamond 3 must be played)
-checkLegal(check if the combination is valid and larger than previous card)
+--at the very first round, diamond 3 must be played)
+--checkLegal(check if the combination is valid and larger than previous card)
 pass(allows player to pass if they can't play any card)
 switchPlayer(switch turns)
 --checkWinner
