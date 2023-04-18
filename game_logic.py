@@ -10,12 +10,6 @@ def checkWinner(player):
         return True
     return False
 
-def playCard(player):
-    """
-    function to play the card
-    """
-    return
-
 def checkCombination(cards):
     """
     check which type of combination is this
@@ -83,12 +77,38 @@ def checkLarger(currCard, cardPlayed):
     """
     check if the played card is larger than the currCard(previous player's card)
     return True if the card is playable
+    The arguement taken are a 2 size array, where 0 is the cards and 1 is the combination type
     """
-    
     if currCard[1] == None: # When there are no previous card
         return True
-    if (currCard[1] == cardPlayed[1]) and (max(currCard[0]) < ):
+    # checking combination type 1-4:
+    if((currCard[1] == cardPlayed[1] and currCard[1] < 5) and currCard[0][0].value == cardPlayed[0][0].value):
         return True
+    # checking combination type 5-9
+    if(currCard[1] > 4 and cardPlayed[1] > 4):
+        if(currCard[1] == cardPlayed[1]): # same combination case i.e. snake vs snake
+            size = len(currCard[0])
+            match size:
+                case 5:
+                    if(cardPlayed[0][4].value > currCard[0][4].value):
+                        return True
+                    elif(cardPlayed[0][4].value == currCard[0][4].value and cardPlayed[0][4].value.suit > currCard[0][4].value.suit):
+                        return True
+                case 6:
+                    if(cardPlayed[0][4].value > currCard[0][4].value):
+                        return True
+                case 7|8:
+                    if(cardPlayed[0][2].value > currCard[0][2].value):
+                        return True
+                case 9:
+                    if(cardsPlayed[0][4].value > currCard[0][4].value):
+                        return True
+                    elif(cardPlayed[0][4].value.suit > currCard[0][4].value.suit):
+                        return True
+        elif(cardPlayed[1] > currCard[1]):
+            return True
+        else:
+            return False
     return False
 
 def goFirst(players):
@@ -110,6 +130,27 @@ def iniHand(players, decks):
     for i in range(4):
         players[i].hand = decks[i]
 
+def checkContainThree(cards):
+    """
+    check if the player's played card contains diamond 3.
+    this function is for first round only.
+    """
+    for x in cards:
+        if x.value == 3 and x.suit.value == 1:
+            return False
+    return True
+
+def playCard(player):
+    """
+    this function play the card.
+    """
+
+def nextPlayer(index):
+    if(index == 3):
+        return 0
+    else:
+        return index + 1
+
 
 def gameLoop(players): # players is an array with player object
     """
@@ -123,8 +164,25 @@ def gameLoop(players): # players is an array with player object
     winner = False
     currCard = [[None][None]] # value and type of combination
     index = goFirst(players) # which player is playing the card now
-
+    passNum = 0 # when 3 players pass, the 4th player is able to play any card
+    isSkip = False
+    isPlayed = False
 
     #loop start here
     while winner == False:
+        # initialising variables for each turn at the beginning.
+
+
+        # methods to display player's desk first.
+
+
+        # a while loop for player to pick card. If the combination is correct, "play" button will appear.
+        # if the "play" button is pressed or the skip button is pressed, while loop ends. Then next player's turn. 
+        while(not isSkip and not isPlayed):
+
+              
         
+        # initialising variables for each turn at last.
+        index = nextPlayer(index)
+        isSkip = False
+        isPlayed = False
