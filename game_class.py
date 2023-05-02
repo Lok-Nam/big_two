@@ -35,8 +35,6 @@ class deck:
         decks = np.array_split(array)
         return decks
 
-
-
 class card:
     
     def __init__(self, suit, value, image):

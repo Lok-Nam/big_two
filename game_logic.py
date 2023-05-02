@@ -79,7 +79,7 @@ def checkLarger(currCard, cardPlayed):
     return True if the card is playable
     The arguement taken are a 2 size array, where 0 is the cards and 1 is the combination type
     """
-    if currCard[1] == None: # When there are no previous card
+    if currCard[1] == [None]: # When there are no previous card
         return True
     # checking combination type 1-4:
     if((currCard[1] == cardPlayed[1] and currCard[1] < 5) and currCard[0][0].value == cardPlayed[0][0].value):
@@ -156,13 +156,12 @@ def gameLoop(players): # players is an array with player object
     """
     looping the game until a player win
     """
-    # initialising things
-    turn = 0
+    # initialising variables
     deck = gc.deck()
     decks = deck.distribute()
     iniHand(players, decks)
-    winner = False
-    currCard = [[None][None]] # value and type of combination
+    winner = False # True if there is a winner
+    currCard = [[None], None] # value and type of combination of card played by previous player
     index = goFirst(players) # which player is playing the card now
     passNum = 0 # when 3 players pass, the 4th player is able to play any card
     isSkip = False
@@ -171,18 +170,24 @@ def gameLoop(players): # players is an array with player object
     #loop start here
     while winner == False:
         # initialising variables for each turn at the beginning.
+        if(passNum == 3): # this line is to allow 4th player to play any card if the previous 3 players all skipped
+            currCard = [[None], None]
+            passNum = 0
+        isSkip = False
+        isPlayed = False
 
-
-        # methods to display player's desk first.
+        # functions to display cards, buttons.
 
 
         # a while loop for player to pick card. If the combination is correct, "play" button will appear.
         # if the "play" button is pressed or the skip button is pressed, while loop ends. Then next player's turn. 
-        while(not isSkip and not isPlayed):
+        while((not isSkip) and (not isPlayed)):
 
-              
-        
+
+
         # initialising variables for each turn at last.
         index = nextPlayer(index)
-        isSkip = False
-        isPlayed = False
+        if(isSkip == True):
+            passNum += passNum
+        else:
+            passNum = 0

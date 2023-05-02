@@ -44,6 +44,11 @@ switchPlayer(switch turns)
 calculateScore
 looping
 
+basic flow of game loop : 
+display cards and the previous player played cards.
+User select cards, system check if the selected card is valid at the same time. if valid, button play is displayed. User is able to skip turn.
+Card submitted or turn skipped, system check if the player won the game, then next player's turn.
+
 game states:
 Initilizing(like setting up player name)
 playing(playing the game)
