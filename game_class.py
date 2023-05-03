@@ -13,8 +13,8 @@ class player:
         self.hand = deck
 
 class suits(Enum):
-    CLUB = 4
-    SPADE = 2
+    CLUB = 2
+    SPADE = 4
     HEART = 3
     DIAMOND = 1
 
@@ -32,13 +32,13 @@ class deck:
         """
         random.shuffle(self.cards)
         array = np.array(self.cards)
-        decks = np.array_split(array)
+        decks = np.array_split(array, 4)
         return decks
 
 class card:
     
-    def __init__(self, suit, value, image):
+    def __init__(self, suit, value):
         self.value = value
         self.suit = suit
-        self.image = pygame.image.load('images/' + self.suit.name + '-' + self.value + '.png')
+        #self.image = pygame.image.load('images/' + self.suit.name + '-' + self.value + '.png')
 

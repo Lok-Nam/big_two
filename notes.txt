@@ -39,7 +39,6 @@ playCard
 --at the very first round, diamond 3 must be played)
 --checkLegal(check if the combination is valid and larger than previous card)
 pass(allows player to pass if they can't play any card)
-switchPlayer(switch turns)
 --checkWinner
 calculateScore
 looping

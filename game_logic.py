@@ -30,7 +30,7 @@ def checkCombination(cards):
             return size
         case 5:
             # sort cards
-            cards = sortCards(cards)
+            cards = sortCardsVisualValue(cards)
             # define cards property
             ascending = True
             sameSuit = True
@@ -55,60 +55,91 @@ def checkCombination(cards):
                 return snake
     return -1 # no combination
 
-def sortCards(cards):
+def sortCardsActualValue(cards):
     """
-    A function to sort cards in 5.
+    A function to sort cards. By actual value i.e. 2 is largest
     """
-    for i in range (4):
-        smallest = cards[i].value
+    for i in range (len(cards)):
+        smallest = cards[i]
         smallestIndex = i
-        for k in range (i+1, 5):
-            if(cards[k].value < smallest):
-                smallest = cards[k].value
+        for k in range (i+1, len(cards)):
+            if(checkLargerCard(smallest, cards[k]) == True):
+                smallest = cards[k]
                 smallestIndex = k
-        temp = cards[smallestIndex]
-        cards[i] = cards[smallestIndex]
-        cards[smallestIndex] = temp
+        (cards[i], cards[smallestIndex]) = (cards[smallestIndex], cards[i])
     return cards
 
+def sortCardsVisualValue(cards):
+    """
+    A function to sort cards. By visual value i.e. 1 is smallest
+    """
+    for i in range (len(cards)):
+        smallestIndex = i
+        for k in range (i+1, len(cards)):
+            if(cards[smallestIndex].value > cards[k].value):
+                smallestIndex = k
+        (cards[i], cards[smallestIndex]) = (cards[smallestIndex], cards[i])
+    return cards
+
+
+def checkLargerCard(cardA,cardB):
+    """
+    check if first card is larger than second card.
+    return True if so.
+    """
+    valueA = cardA.value
+    valueB = cardB.value
+    if(valueA == 1 or valueA == 2): # in big_2, ace and 2 are the largest.
+        valueA = valueA + 13
+    if(valueB == 1 or valueB == 2):
+        valueB = valueB + 13
+
+    if(valueA > valueB):
+        return True
+    elif(valueA == valueB and cardA.suit.value > cardB.suit.value):
+        return True
+    else:
+        return False
+
+def findLargestCard(cards):
+    """
+    take in a valid combination of cards and return the card that indicate the combination value.
+    cards[0] is the card list, cards[1] is the type of comb
+    """
+    sortCardsActualValue(cards[0])
+    size = len(cards[0])
+    if(size > 0 and size < 5):
+        return cards[0][size-1]
+    if(size == 5):
+        match cards[1]:
+            case 5|6|9:
+                return cards[0][4]
+            case 7|8:
+                return cards[0][2]
+    return -1
         
 
-def checkLarger(currCard, cardPlayed):
+def checkLargerComb(currCard, cardPlayed):
     """
     check if the played card is larger than the currCard(previous player's card)
-    return True if the card is playable
+    return True if the card is playable (cards are sorted)
     The arguement taken are a 2 size array, where 0 is the cards and 1 is the combination type
     """
     if currCard[1] == [None]: # When there are no previous card
         return True
+    # get the value of the largest card in combination first
+    currLargest = findLargestCard(currCard)
+    playedLargest = findLargestCard(cardPlayed)
+    isLarger = checkLargerCard(playedLargest, currLargest)
     # checking combination type 1-4:
-    if((currCard[1] == cardPlayed[1] and currCard[1] < 5) and currCard[0][0].value == cardPlayed[0][0].value):
+    if((currCard[1] == cardPlayed[1] and currCard[1] < 5)and isLarger): # same combination
         return True
     # checking combination type 5-9
     if(currCard[1] > 4 and cardPlayed[1] > 4):
-        if(currCard[1] == cardPlayed[1]): # same combination case i.e. snake vs snake
-            size = len(currCard[0])
-            match size:
-                case 5:
-                    if(cardPlayed[0][4].value > currCard[0][4].value):
-                        return True
-                    elif(cardPlayed[0][4].value == currCard[0][4].value and cardPlayed[0][4].value.suit > currCard[0][4].value.suit):
-                        return True
-                case 6:
-                    if(cardPlayed[0][4].value > currCard[0][4].value):
-                        return True
-                case 7|8:
-                    if(cardPlayed[0][2].value > currCard[0][2].value):
-                        return True
-                case 9:
-                    if(cardsPlayed[0][4].value > currCard[0][4].value):
-                        return True
-                    elif(cardPlayed[0][4].value.suit > currCard[0][4].value.suit):
-                        return True
-        elif(cardPlayed[1] > currCard[1]):
+        if(currCard[1] < cardPlayed[1]):
             return True
-        else:
-            return False
+        if(currCard[1] == cardPlayed[1] and isLarger):
+            return True
     return False
 
 def goFirst(players):
@@ -129,6 +160,7 @@ def iniHand(players, decks):
     """
     for i in range(4):
         players[i].hand = decks[i]
+
 
 def checkContainThree(cards):
     """
@@ -182,7 +214,7 @@ def gameLoop(players): # players is an array with player object
         # a while loop for player to pick card. If the combination is correct, "play" button will appear.
         # if the "play" button is pressed or the skip button is pressed, while loop ends. Then next player's turn. 
         while((not isSkip) and (not isPlayed)):
-
+            return # ensure no error message when testing
 
 
         # initialising variables for each turn at last.
