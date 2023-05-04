@@ -40,5 +40,5 @@ class card:
     def __init__(self, suit, value):
         self.value = value
         self.suit = suit
-        #self.image = pygame.image.load('images/' + self.suit.name + '-' + self.value + '.png')
+        self.image = pygame.image.load('images/' + str(self.suit.name) + '-' + str(self.value) + '.png')
 

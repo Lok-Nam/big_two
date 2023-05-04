@@ -145,7 +145,6 @@ def checkLargerComb(currCard, cardPlayed):
 def goFirst(players):
     """
     check which player go first, player with diamond 3 will go first
-    
     return the number of the player
     """
     for i in range(4):
