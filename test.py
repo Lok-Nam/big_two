@@ -8,14 +8,20 @@ import game_logic as gl
 import display_functions as df
 
 while True:
-
-    pygame.init()
     players = []
     for i in range (4):
         players.append(gc.player(i))
     testDeck = gc.deck()
     decks = testDeck.distribute()
     gl.iniHand(players, decks)
+    gl.sortCardsActualValue(players[0].hand)
     df.display_hand(players[0])
+    df.display_last_played([players[0].hand])
+    df.display_buttons(True)
+    df.display_top_bar(players, 0)
+
     pygame.display.flip()
-    pygame.time.delay(10000)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+    #pygame.time.delay(5000)
