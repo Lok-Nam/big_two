@@ -1,5 +1,7 @@
 import pygame
 import game_class as gc
+import game_control as gcon
+import display_functions as df
 
 def checkWinner(player):
     """
@@ -26,11 +28,13 @@ def checkCombination(cards):
         case 2|3|4:
             for i in range (size - 1):
                 if(cards[i].value != cards[i+1].value):
-                    return 0 # 0 means invalid combination
+                    return -1 # -1 means invalid combination
             return size
         case 5:
             # sort cards
             cards = sortCardsVisualValue(cards)
+            for x in cards:
+                print(x.value)
             # define cards property
             ascending = True
             sameSuit = True
@@ -125,12 +129,15 @@ def checkLargerComb(currCard, cardPlayed):
     return True if the card is playable (cards are sorted)
     The arguement taken are a 2 size array, where 0 is the cards and 1 is the combination type
     """
-    if currCard[1] == [None]: # When there are no previous card
+    if currCard[1] == -1 and cardPlayed[1] != -1: # When there are no previous card
         return True
+    if cardPlayed[1] == -1:
+        return False
     # get the value of the largest card in combination first
     currLargest = findLargestCard(currCard)
     playedLargest = findLargestCard(cardPlayed)
     isLarger = checkLargerCard(playedLargest, currLargest)
+    print(isLarger)
     # checking combination type 1-4:
     if((currCard[1] == cardPlayed[1] and currCard[1] < 5)and isLarger): # same combination
         return True
@@ -161,20 +168,29 @@ def iniHand(players, decks):
         players[i].hand = decks[i]
 
 
-def checkContainThree(cards):
+def checkContainThree(cards, isFirst):
     """
     check if the player's played card contains diamond 3.
     this function is for first round only.
     """
+    if(isFirst == False):
+        return True
     for x in cards:
         if x.value == 3 and x.suit.value == 1:
-            return False
-    return True
+            return True
+    return False
 
-def playCard(player):
+def playCard(player, cardPlayed):
     """
     this function play the card.
     """
+    for x in cardPlayed[0]:
+        for i in range(len(player.hand)):
+            if (player.hand[i].value == x.value) and (player.hand[i].suit.value == x.suit.value):
+                player.hand.remove(player.hand[i])
+                break
+    return player
+
 
 def nextPlayer(index):
     if(index == 3):
@@ -182,6 +198,19 @@ def nextPlayer(index):
     else:
         return index + 1
 
+def isSkipping(cards):
+    if(cards == []):
+        return False
+    return True
+
+def pickCard(cardIndex, player, cardPlayed):
+    cardPicked = player.hand[cardIndex]
+    if cardPicked in cardPlayed[0]:
+        cardPlayed[0].remove(cardPicked)
+    else:
+        cardPlayed[0].append(cardPicked)
+    sortCardsActualValue(cardPlayed[0])
+    return cardPlayed
 
 def gameLoop(players): # players is an array with player object
     """
@@ -192,33 +221,58 @@ def gameLoop(players): # players is an array with player object
     decks = deck.distribute()
     iniHand(players, decks)
     winner = False # True if there is a winner
-    currCard = [[None], None] # value and type of combination of card played by previous player
+    currCard = [[], -1] # value and type of combination of card played by previous player
+    cardPicked = [[], -1]
     index = goFirst(players) # which player is playing the card now
     passNum = 0 # when 3 players pass, the 4th player is able to play any card
     isSkip = False
     isPlayed = False
+    isExit = False
+    isFirst = True
 
     #loop start here
     while winner == False:
         # initialising variables for each turn at the beginning.
         if(passNum == 3): # this line is to allow 4th player to play any card if the previous 3 players all skipped
-            currCard = [[None], None]
+            currCard = [[], -1]
             passNum = 0
         isSkip = False
         isPlayed = False
-
-        # functions to display cards, buttons.
-
+        sortCardsActualValue(players[index].hand)
 
         # a while loop for player to pick card. If the combination is correct, "play" button will appear.
         # if the "play" button is pressed or the skip button is pressed, while loop ends. Then next player's turn. 
-        while((not isSkip) and (not isPlayed)):
-            return # ensure no error message when testing
+        while((not isSkip) and (not isPlayed) and (not isExit)):
+            # debugging
+            # handling events
+            (players[index], cardPicked, isSkip, isPlayed, isExit) = gcon.handle_mouse_click(players[index], cardPicked, checkLargerComb(currCard, cardPicked) and checkContainThree(cardPicked[0], isFirst), isSkipping(currCard[0]))
+
+            # updating card info
+            cardPicked[1] = -1
+            comType = checkCombination(cardPicked[0])
+            if(comType != -1):
+                cardPicked[1] = comType
+            
+
+            # update screen
+            df.ini_screen()
+            df.display_hand(players[index], cardPicked[0])
+            df.display_last_played(currCard)
+            df.display_buttons(checkLargerComb(currCard, cardPicked)and checkContainThree(cardPicked[0], isFirst), isSkipping(currCard[0]))
+            df.display_top_bar(players, index)
+            pygame.display.flip()
 
 
         # initialising variables for each turn at last.
+        isFirst = False
         index = nextPlayer(index)
         if(isSkip == True):
-            passNum += passNum
+            passNum += 1
         else:
+            currCard = cardPicked.copy()
             passNum = 0
+        cardPicked = [[], -1]
+        if checkWinner(players[index]):
+            return index
+        if isExit:
+            pygame.quit()

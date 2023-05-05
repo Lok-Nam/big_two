@@ -30,7 +30,7 @@ card_height = 140
 button_width = 120
 button_height = 70
 play_button_X = screen_width /2 -250
-play_button_Y = screen_height/2 + card_height
+play_button_Y = screen_height/2 + card_height - 40
 skip_button_X = screen_width - play_button_X - button_width
 skip_button_Y = play_button_Y
 play_button_rect = pygame.Rect(play_button_X, play_button_Y, button_width, button_height)
@@ -43,15 +43,22 @@ smallfont = pygame.font.SysFont('Corbel',35)
 bar_height = 50
 bar_rect = pygame.Rect(0, 0, screen_width, bar_height)
 
-def display_hand(player):
+def ini_screen():
+    screen.fill((0, 0, 0))
+
+def display_hand(player, chosen):
     cards = player.hand
     num = len(cards)
     offset = (screen_width -( card_width*num ))/2
     for i in range (num):
+        if cards[i] in chosen:
+            offsetY = 30
+        else:
+            offsetY = 0
         image = cards[i].image.convert()
         image = pygame.transform.scale(image, (card_width, card_height))
         x = offset + (i*card_width)
-        pos = pygame.Rect(x, screen_height - card_height, card_width, card_height)
+        pos = pygame.Rect(x, screen_height - card_height - offsetY, card_width, card_height)
         screen.blit(image, pos)
 
 
@@ -67,7 +74,7 @@ def display_last_played(played):
         pos = pygame.Rect(x, offsetY, card_width, card_height)
         screen.blit(image, pos)
 
-def display_buttons(isPlayable):
+def display_buttons(isPlayable, isSkipable):
     text_play = smallfont.render('play' , True , white)
     text_skip = smallfont.render('skip', True, white)
     mouse = pygame.mouse.get_pos()
@@ -78,10 +85,10 @@ def display_buttons(isPlayable):
         pygame.draw.rect(screen, blue, play_button_rect)
         screen.blit(text_play, (play_button_X+20, play_button_Y+20))
     
-    if((mouse[0] > skip_button_X and mouse[0] < skip_button_X + button_width)and(mouse[1] > skip_button_Y and mouse[1] < skip_button_Y + button_height)):
+    if((mouse[0] > skip_button_X and mouse[0] < skip_button_X + button_width)and(mouse[1] > skip_button_Y and mouse[1] < skip_button_Y + button_height) and isSkipable):
         pygame.draw.rect(screen, dark_orange, skip_button_rect)
         screen.blit(text_skip, (skip_button_X+20, skip_button_Y+20))
-    else:
+    elif(isSkipable):
         pygame.draw.rect(screen, orange, skip_button_rect)
         screen.blit(text_skip, (skip_button_X+20, skip_button_Y+20))
 

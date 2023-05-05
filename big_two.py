@@ -7,10 +7,10 @@ import display_functions as df
 running = True
 pygame.init()
 
-while running:
+players = []
+for i in range (4):
+    players.append(gc.player(i))
+winner = gl.gameLoop(players)
 
-    df.ini_screen()
-    
-
-
+print("player", winner, "won")
 pygame.quit()

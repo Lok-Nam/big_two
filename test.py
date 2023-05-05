@@ -15,9 +15,9 @@ while True:
     decks = testDeck.distribute()
     gl.iniHand(players, decks)
     gl.sortCardsActualValue(players[0].hand)
-    df.display_hand(players[0])
+    df.display_hand(players[0], [1,5,6,8,10])
     df.display_last_played([players[0].hand])
-    df.display_buttons(True)
+    df.display_buttons(True, True)
     df.display_top_bar(players, 0)
 
     pygame.display.flip()

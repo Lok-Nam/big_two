@@ -33,7 +33,8 @@ class deck:
         random.shuffle(self.cards)
         array = np.array(self.cards)
         decks = np.array_split(array, 4)
-        return decks
+        deckLists = [x.tolist() for x in [*decks]]
+        return deckLists
 
 class card:
     
