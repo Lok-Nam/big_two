@@ -33,18 +33,21 @@ def checkCombination(cards):
         case 5:
             # sort cards
             cards = sortCardsVisualValue(cards)
-            for x in cards:
-                print(x.value)
             # define cards property
             ascending = True
             sameSuit = True
+            specialAsc = True
+            specialSnake = [1,10,11,12,13]
             # check straightFlush first : 
             for i in range(4):
                 if(cards[i].value + 1 != cards[i+1].value):
                     ascending = False
                 if(cards[i].suit != cards[i+1].suit):
                     sameSuit = False
-            if(sameSuit and ascending):
+            for i in range(5):
+                if(cards[i].value != specialSnake[i]):
+                    specialAsc = False
+            if(sameSuit and (ascending or specialAsc)):
                 return straightFlush
             # check fourPlusOne ie KKKKA: 
             if(cards[1].value == cards[2].value == cards[3].value and (cards[1].value == cards[0].value or cards[1].value == cards[4].value)):
@@ -55,7 +58,7 @@ def checkCombination(cards):
             # check flush(same suit):
             if(sameSuit):
                 return flush
-            if(ascending):
+            if(ascending or specialAsc):
                 return snake
     return -1 # no combination
 
@@ -137,7 +140,6 @@ def checkLargerComb(currCard, cardPlayed):
     currLargest = findLargestCard(currCard)
     playedLargest = findLargestCard(cardPlayed)
     isLarger = checkLargerCard(playedLargest, currLargest)
-    print(isLarger)
     # checking combination type 1-4:
     if((currCard[1] == cardPlayed[1] and currCard[1] < 5)and isLarger): # same combination
         return True
