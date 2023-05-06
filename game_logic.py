@@ -266,6 +266,8 @@ def gameLoop(players): # players is an array with player object
 
 
         # initialising variables for each turn at last.
+        if checkWinner(players[index]):
+            return index
         isFirst = False
         index = nextPlayer(index)
         if(isSkip == True):
@@ -274,7 +276,6 @@ def gameLoop(players): # players is an array with player object
             currCard = cardPicked.copy()
             passNum = 0
         cardPicked = [[], -1]
-        if checkWinner(players[index]):
-            return index
+        
         if isExit:
             pygame.quit()
