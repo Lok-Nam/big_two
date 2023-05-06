@@ -6,13 +6,21 @@ import display_functions as df
 
 
 def handle_mouse_click(player, cardPlayed, isPlayable, isSkippable):
-    ev = pygame.event.get()
+    """
+    handles all the mouse click events. (choosing cards, clicking buttons.)
+    Returns a tuple which is (player object, cardPlayed, isSkip?, isPlay?, isExit)
+    """
+    ev = pygame.event.get() # getting event list
 
     for event in ev:
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        # checking exit event, escape key should quit game
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            return (player, cardPlayed, False, False, True)
+        
+        if event.type == pygame.MOUSEBUTTONDOWN: # if the event equals mouose clicking action
             pos = pygame.mouse.get_pos()
 
-            # clicking cards
+            # clicking on cards
             num = len(player.hand)
             offset = (df.screen_width -( df.card_width*num ))/2
             if ((pos[0] > offset and pos[0] < df.screen_width - offset )and pos[1] > df.screen_height - df.card_height):
@@ -33,8 +41,6 @@ def handle_mouse_click(player, cardPlayed, isPlayable, isSkippable):
             if(isSkippable):
                 if((pos[0] > df.skip_button_X and pos[0] < df.skip_button_X + df.button_width) and (pos[1] > df.play_button_Y and pos[1] < df.play_button_Y + df.button_height)):
                     return (player, cardPlayed, True, False, False)
-        elif event.type == pygame.QUIT:
-            return (player, cardPlayed, False, False, True)
-        else:
+        else: # no clicking actions performed
             return (player, cardPlayed, False, False, False)
     return (player, cardPlayed, False, False, False)

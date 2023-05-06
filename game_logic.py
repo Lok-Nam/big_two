@@ -206,6 +206,9 @@ def isSkipping(cards):
     return True
 
 def pickCard(cardIndex, player, cardPlayed):
+    """
+    modify the cardPlayed list
+    """
     cardPicked = player.hand[cardIndex]
     if cardPicked in cardPlayed[0]:
         cardPlayed[0].remove(cardPicked)
@@ -245,7 +248,6 @@ def gameLoop(players): # players is an array with player object
         # a while loop for player to pick card. If the combination is correct, "play" button will appear.
         # if the "play" button is pressed or the skip button is pressed, while loop ends. Then next player's turn. 
         while((not isSkip) and (not isPlayed) and (not isExit)):
-            # debugging
             # handling events
             (players[index], cardPicked, isSkip, isPlayed, isExit) = gcon.handle_mouse_click(players[index], cardPicked, checkLargerComb(currCard, cardPicked) and checkContainThree(cardPicked[0], isFirst), isSkipping(currCard[0]))
 
@@ -277,5 +279,7 @@ def gameLoop(players): # players is an array with player object
             passNum = 0
         cardPicked = [[], -1]
         
-        if isExit:
+        if isExit: # quit game and return -1 as quitting number
+            print("Exited game")
             pygame.quit()
+            return -1

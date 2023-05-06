@@ -12,5 +12,8 @@ for i in range (4):
     players.append(gc.player(i))
 winner = gl.gameLoop(players)
 
-print("player", winner+1, "won")
-pygame.quit()
+if(winner == -1): # exiting game
+    pygame.quit()
+else:
+    print("player", winner+1, "won") # print win message
+    pygame.quit()
